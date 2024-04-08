@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # MongoDB default port
+
+  backend:
+    image: indrawan/athena-backend
+    container_name: backend
+    ports:
+      - "8001:8001"  # Port mapping for the Node.js backend
+    depends_on:
+      - mongodb  # Ensure MongoDB is started before the backend
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017  # Connection URI for your MongoDB
+      MONGODB_DB: athena
+      NODE_ENV: production
+      PORT: 8001
+      SECRET: jwtsecret
